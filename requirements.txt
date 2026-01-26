@@ -1,0 +1,7 @@
+python-telegram-bot==21.6
+fastapi
+uvicorn
+gunicorn
+requests
+apscheduler
+python-dotenv
