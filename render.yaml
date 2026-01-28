@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: job-alert-bot
+    env: python
+    region: oregon
+    plan: free
+    runtime: python3.10
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    envVars:
+      - key: TELEGRAM_TOKEN
+        sync: false
+      - key: ADMIN_ID
+        sync: false
+      - key: WEBHOOK_BASE_URL
+        fromService: true
+        service: job-alert-bot
+      - key: WEBHOOK_TOKEN
+        sync: false
+      - key: TIMEZONE
+        value: Asia/Kolkata
+      - key: SCRAPE_INTERVAL_HOURS
+        value: "3"
+      - key: DAILY_ALERT_HOUR
+        value: "9"
+      - key: SEND_BATCH_SIZE
+        value: "25"
+      - key: SEND_BATCH_SLEEP
+        value: "0.6"
+      - key: LOG_LEVEL
+        value: INFO
+      - key: DB_FILE
+        value: database.db
+    healthCheckInterval: 30
+    healthCheckTimeout: 10
+    healthCheckRetries: 3
+    healthCheckStartPeriod: 40
