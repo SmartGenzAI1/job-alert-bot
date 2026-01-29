@@ -22,11 +22,11 @@ install:
 
 # Start development server
 dev:
-	uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+	uv run uvicorn app:app --reload --host 0.0.0.0 --port 8000
 
 # Start production server
 start:
-	uv run uvicorn main:app --host 0.0.0.0 --port 8000
+	uv run uvicorn app:app --host 0.0.0.0 --port 8000
 
 # Docker commands
 docker-build:

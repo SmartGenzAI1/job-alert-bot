@@ -118,10 +118,10 @@ start_application() {
     
     if [ "$1" = "dev" ]; then
         echo "Starting in development mode..."
-        uvicorn main:app --reload --host 0.0.0.0 --port 8000
+        uvicorn app:app --reload --host 0.0.0.0 --port 8000
     else
         echo "Starting in production mode..."
-        uvicorn main:app --host 0.0.0.0 --port 8000
+        uvicorn app:app --host 0.0.0.0 --port 8000
     fi
 }
 
