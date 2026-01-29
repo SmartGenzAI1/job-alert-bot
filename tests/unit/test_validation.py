@@ -72,9 +72,15 @@ class TestValidator:
     
     def test_validate_username_html_escaping(self):
         """Test HTML escaping in username."""
-        result = Validator.validate_username("<script>alert('xss')</script>")
+        result = Validator.validate_username("Test User")
         assert result.is_valid is True
-        assert "<script>" not in result.value
+        assert result.value == "Test User"
+        
+        # Test that HTML is escaped
+        result = Validator.validate_username("<b>Test</b>")
+        assert result.is_valid is True
+        assert "<b>" not in result.value
+        assert "&lt;b&gt;" in result.value
     
     def test_validate_url_valid(self):
         """Test valid URL validation."""

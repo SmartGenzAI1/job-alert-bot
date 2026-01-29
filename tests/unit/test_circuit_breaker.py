@@ -148,20 +148,18 @@ class TestCircuitBreakerRegistry:
         """Test circuit breaker decorator."""
         call_count = 0
         
-        @circuit_breaker("decorated_func")
+        @circuit_breaker("decorated_func_test")
         async def test_func():
             nonlocal call_count
             call_count += 1
-            if call_count < 4:
-                raise ValueError("Test error")
-            return "success"
+            raise ValueError("Test error")
         
-        # Should fail 3 times
+        # Should fail 3 times and open circuit
         for _ in range(3):
             with pytest.raises(ValueError):
                 await test_func()
         
-        # Circuit should be open now
+        # Circuit should be open now - 4th call should raise CircuitBreakerOpenError
         with pytest.raises(CircuitBreakerOpenError):
             await test_func()
 

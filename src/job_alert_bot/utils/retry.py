@@ -75,7 +75,7 @@ async def retry_with_backoff(
             
             # Add jitter to prevent thundering herd
             if config.jitter:
-                delay += random.uniform(0, config.jitter_max)
+                delay += random.uniform(0, config.jitter_max)  # nosec B311
             
             logger.warning(
                 f"Attempt {attempt}/{config.max_attempts} failed: {e}. "
@@ -154,7 +154,7 @@ class AsyncRetryable:
         )
         
         if self.config.jitter:
-            delay += random.uniform(0, self.config.jitter_max)
+            delay += random.uniform(0, self.config.jitter_max)  # nosec B311
         
         logger.warning(
             f"Attempt {self.attempt}/{self.config.max_attempts} failed: {exc_val}. "
