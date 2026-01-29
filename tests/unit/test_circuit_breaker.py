@@ -4,7 +4,11 @@ import pytest
 import asyncio
 from unittest.mock import AsyncMock, patch
 
-from src.job_alert_bot.utils.circuit_breaker import (
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
+
+from job_alert_bot.utils.circuit_breaker import (
     CircuitBreaker,
     CircuitBreakerConfig,
     CircuitBreakerOpenError,

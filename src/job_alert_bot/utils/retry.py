@@ -1,7 +1,7 @@
 """Retry mechanism with exponential backoff for resilient operations."""
 
 import asyncio
-import random
+import random  # nosec B311 - Not used for cryptography, only for jitter
 from typing import Callable, TypeVar, Optional, Tuple, Type, Any
 from functools import wraps
 from dataclasses import dataclass

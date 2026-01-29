@@ -1,7 +1,11 @@
 """Unit tests for validation utilities."""
 
 import pytest
-from src.job_alert_bot.utils.validation import Validator, BatchValidator, ValidationResult
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
+
+from job_alert_bot.utils.validation import Validator, BatchValidator, ValidationResult
 
 
 class TestValidator:

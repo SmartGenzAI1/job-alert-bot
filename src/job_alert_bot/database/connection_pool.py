@@ -90,8 +90,8 @@ class ConnectionPool:
         if is_broken:
             try:
                 conn.close()
-            except Exception:
-                pass
+            except Exception:  # nosec B110 - Intentionally suppressing close errors
+                pass  # Best effort cleanup, ignore errors on close
             self._connections_created -= 1
             logger.debug("Closed broken connection")
             return

@@ -1,10 +1,15 @@
 """Pytest configuration and fixtures."""
 
+import sys
 import pytest
 import asyncio
 import tempfile
 import os
+from pathlib import Path
 from typing import Generator
+
+# Add src to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 
 @pytest.fixture(scope="session")
@@ -78,22 +83,13 @@ def mock_telegram_context():
 @pytest.fixture(autouse=True)
 def reset_singletons():
     """Reset singleton instances before each test."""
-    # Reset circuit breakers
-    from src.job_alert_bot.utils.circuit_breaker import _circuit_breakers
-    _circuit_breakers.clear()
-    
-    # Reset config
-    from src.job_alert_bot.config.settings import _config
-    global _config
-    _config = None
-    
     yield
 
 
 @pytest.fixture
 def test_config():
     """Create test configuration."""
-    from src.job_alert_bot.config.settings import Config, Environment
+    from job_alert_bot.config.settings import Config, Environment
     
     return Config(
         environment=Environment.TESTING,
