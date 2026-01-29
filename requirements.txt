@@ -1,7 +1,5 @@
 python-telegram-bot==21.6
 fastapi
-uvicorn
-gunicorn
+uvicorn[standard]
 requests
-apscheduler
 python-dotenv
