@@ -29,13 +29,14 @@ app.add_middleware(
 
 # Initialize bot and database
 tg_app = None
+scheduler = None
 startup_time = time.time()
 
 
 @app.on_event("startup")
 async def startup():
     """Initialize the application on startup."""
-    global tg_app
+    global tg_app, scheduler
     
     try:
         logger.info("Starting Job Alert Bot...")
@@ -48,6 +49,12 @@ async def startup():
         tg_app = create_bot()
         await tg_app.initialize()
         logger.info("Telegram bot initialized successfully")
+        
+        # Initialize and start scheduler
+        from services.scheduler import setup_scheduler
+        scheduler = setup_scheduler(tg_app)
+        await scheduler.start()
+        logger.info("Scheduler started successfully")
         
         # Set webhook
         webhook_url = f"{WEBHOOK_BASE_URL}/webhook/{WEBHOOK_TOKEN}"
@@ -64,7 +71,13 @@ async def startup():
 @app.on_event("shutdown")
 async def shutdown():
     """Clean up resources on shutdown."""
+    global scheduler
     try:
+        # Stop scheduler
+        if scheduler:
+            await scheduler.stop()
+            logger.info("Scheduler stopped")
+        
         if tg_app:
             await tg_app.shutdown()
             logger.info("Telegram bot shutdown completed")

@@ -1,325 +1,265 @@
-# 🚀 Telegram Job Alert Bot
+# Job Alert Bot 🤖
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue)
-![Telegram](https://img.shields.io/badge/Telegram-Bot-green)
-![FastAPI](https://img.shields.io/badge/FastAPI-Web%20Framework-blueviolet)
-![Render](https://img.shields.io/badge/Deploy-Render-purple)
-![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
-![License](https://img.shields.io/badge/license-MIT-yellow)
-![Status](https://img.shields.io/badge/status-Production-brightgreen)
+[![CI/CD](https://github.com/SmartGenzAI1/job-alert-bot/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/SmartGenzAI1/job-alert-bot/actions/workflows/ci-cd.yml)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-A **production-ready Telegram bot** that automatically sends:
+A production-grade Telegram bot for job alerts with multi-source scraping, intelligent scheduling, and robust error handling.
 
-✅ Jobs  
-✅ Internships  
-✅ Remote work  
-✅ Scholarships  
+## 🌟 Features
 
-directly to students every day.
+- **Multi-Source Job Scraping**: RemoteOK, We Work Remotely, Remotive, and more
+- **Intelligent Scheduling**: Automatic scraping with configurable intervals
+- **Circuit Breaker Pattern**: Protects against cascading failures
+- **Exponential Backoff**: Automatic retry with intelligent backoff
+- **Structured Logging**: JSON logging with correlation IDs for request tracing
+- **Input Validation**: Comprehensive validation and SQL injection prevention
+- **Connection Pooling**: Thread-safe database operations with transaction management
+- **Prometheus Metrics**: Monitoring and alerting support
+- **Health Checks**: Comprehensive health check endpoints
+- **Multi-Environment Config**: Support for dev/staging/production environments
 
----
+## 🏗️ Architecture
 
-## ✨ Features
-
-### 🎯 For Users
-- **/start** registration with user-friendly onboarding
-- **Category selection** (Jobs, Remote, Internships, Scholarships)
-- **Instant job lookup** with /jobs, /remote, /internships, /scholarships commands
-- **Daily auto alerts** at 9 AM IST
-- **Rich formatting** with Markdown support
-- **Smart batching** to avoid message limits
-
-### 👑 For Admins
-- **/stats** - View comprehensive bot statistics
-- **/broadcast** - Send messages to all users with confirmation
-- **/confirm_broadcast** - Confirm and send broadcast messages
-- **/cleanup_jobs** - Clean up old job listings
-- **/confirm_cleanup** - Confirm and execute cleanup
-- **Security controls** with admin-only access
-
-### 🤖 Smart Features
-- **Automatic scraping** from multiple job sources
-- **Duplicate prevention** with intelligent job filtering
-- **Rate limiting** to avoid Telegram API limits
-- **Batch processing** for efficient message delivery
-- **Webhook support** for production deployment
-- **SQLite database** with proper indexing
-- **Comprehensive logging** for monitoring and debugging
-
-### 🛡️ Production Ready
-- **Environment variable management** with validation
-- **Error handling** throughout the application
-- **Input validation** and sanitization
-- **Health checks** and monitoring endpoints
-- **CORS protection** and security headers
-- **Database connection pooling** and management
-- **Graceful shutdown** and startup procedures
-
----
-
-## 🧠 Tech Stack
-
-- **Python 3.10+** - Modern Python with type hints
-- **python-telegram-bot 21.6** - Official Telegram bot library
-- **FastAPI** - High-performance web framework
-- **SQLite** - Lightweight database with proper indexing
-- **APScheduler** - Advanced job scheduling
-- **Requests** - HTTP client for scraping
-- **python-dotenv** - Environment variable management
-- **Uvicorn** - ASGI server for production
-
----
-
-## ⚙️ Setup & Configuration
-
-### 1. Environment Setup
-
-#### Create Environment File
-```bash
-cp .env.example .env
+```
+job-alert-bot/
+├── src/job_alert_bot/
+│   ├── config/           # Configuration management
+│   ├── database/         # Database models and connection pooling
+│   ├── handlers/         # Telegram bot command handlers
+│   ├── monitoring/       # Metrics and health checks
+│   ├── services/         # Business logic (scrapers, scheduler, notifier)
+│   └── utils/            # Utilities (validation, retry, circuit breaker)
+├── tests/                # Test suite
+│   ├── unit/            # Unit tests
+│   ├── integration/     # Integration tests
+│   └── e2e/             # End-to-end tests
+├── .github/workflows/    # CI/CD pipelines
+├── monitoring/           # Prometheus/Grafana configs
+└── docs/                # Documentation
 ```
 
-#### Configure Environment Variables
-Edit `.env` file with your settings:
+## 🚀 Quick Start
 
+### Prerequisites
+
+- Python 3.11+
+- Telegram Bot Token (from [@BotFather](https://t.me/botfather))
+- Your Telegram User ID (from [@userinfobot](https://t.me/userinfobot))
+
+### Installation
+
+1. **Clone the repository**
 ```bash
-# Required Configuration
-TELEGRAM_TOKEN=your_telegram_bot_token_here
-ADMIN_ID=your_telegram_user_id_here
-WEBHOOK_BASE_URL=https://your-app-name.onrender.com
-WEBHOOK_TOKEN=your_webhook_token_here
-
-# Optional Configuration
-TIMEZONE=Asia/Kolkata
-SCRAPE_INTERVAL_HOURS=3
-DAILY_ALERT_HOUR=9
-SEND_BATCH_SIZE=25
-SEND_BATCH_SLEEP=0.6
-LOG_LEVEL=INFO
-DB_FILE=database.db
+git clone https://github.com/SmartGenzAI1/job-alert-bot.git
+cd job-alert-bot
 ```
 
-### 2. Local Development
-
-#### Using Python Virtual Environment
+2. **Create virtual environment**
 ```bash
-# Create virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-# Install dependencies
+3. **Install dependencies**
+```bash
 pip install -r requirements.txt
-
-# Run the application
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-#### Using Docker
+4. **Configure environment variables**
 ```bash
-# Build and run with Docker Compose
-docker-compose up -d
-
-# View logs
-docker-compose logs -f job-alert-bot
+cp .env.example .env
+# Edit .env with your configuration
 ```
 
-### 3. Production Deployment
-
-#### Deploy to Render (Recommended)
-1. **Fork this repository**
-2. **Sign up for Render** at [render.com](https://render.com)
-3. **Connect your repository** to Render
-4. **Use the render.yaml** configuration file for automatic setup
-5. **Set environment variables** in Render dashboard:
-   - `TELEGRAM_TOKEN` - Your bot token from @BotFather
-   - `ADMIN_ID` - Your Telegram user ID
-   - `WEBHOOK_TOKEN` - Generate a secure token
-6. **Deploy!** Render will automatically build and deploy your bot
-
-#### Deploy to Railway
-1. **Click the Railway deploy button**
-2. **Fork and connect** your repository
-3. **Set environment variables** in Railway dashboard
-4. **Deploy your application**
-
-#### Deploy to Heroku
+5. **Run the bot**
 ```bash
-# Install Heroku CLI
-curl https://cli-assets.heroku.com/install.sh | sh
-
-# Login to Heroku
-heroku login
-
-# Create new app
-heroku create your-app-name
-
-# Set environment variables
-heroku config:set TELEGRAM_TOKEN=your_token
-heroku config:set ADMIN_ID=your_id
-heroku config:set WEBHOOK_TOKEN=your_token
-
-# Deploy
-git push heroku main
-
-# Scale dyno
-heroku ps:scale web=1
+python -m src.job_alert_bot
 ```
 
-### 4. Bot Configuration
+## ⚙️ Configuration
 
-#### Set Up Webhook
-Once deployed, set up the webhook with Telegram:
+### Environment Variables
+
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `TELEGRAM_TOKEN` | Bot token from @BotFather | Yes | - |
+| `ADMIN_ID` | Your Telegram user ID | Yes | - |
+| `WEBHOOK_BASE_URL` | Webhook base URL | Yes | - |
+| `WEBHOOK_TOKEN` | Webhook security token | Yes | - |
+| `ENVIRONMENT` | Environment name | No | `development` |
+| `LOG_LEVEL` | Logging level | No | `INFO` |
+| `DB_FILE` | Database file path | No | `database.db` |
+| `SCRAPE_INTERVAL_HOURS` | Scraping interval | No | `3` |
+| `DAILY_ALERT_HOUR` | Daily alert time | No | `9` |
+
+See [`.env.example`](.env.example) for complete configuration options.
+
+## 🧪 Testing
+
+### Run all tests
 ```bash
-curl -X POST "https://api.telegram.org/bot{YOUR_BOT_TOKEN}/setWebhook" \
-  -H "Content-Type: application/json" \
-  -d '{"url": "https://your-app-name.onrender.com/webhook/{YOUR_WEBHOOK_TOKEN}"}'
+pytest
 ```
 
-#### Verify Webhook
+### Run with coverage
 ```bash
-curl "https://api.telegram.org/bot{YOUR_BOT_TOKEN}/getWebhookInfo"
+pytest --cov=src --cov-report=html
 ```
 
----
+### Run specific test categories
+```bash
+pytest tests/unit          # Unit tests only
+pytest tests/integration   # Integration tests only
+pytest tests/e2e          # End-to-end tests only
+```
 
-## 📊 Monitoring & Health Checks
+## 📊 Monitoring
 
 ### Health Check Endpoints
-- **Basic Health**: `GET /` - Simple health check
-- **Detailed Health**: `GET /api/health/detailed` - Comprehensive system status
-- **Statistics**: `GET /api/stats` - Application statistics
 
-### Monitoring Features
-- **Uptime tracking** with startup time monitoring
-- **Database connection** health checks
-- **Bot status** verification
-- **Webhook configuration** validation
-- **Job processing** statistics
-- **User engagement** metrics
+- `GET /` - Basic health check
+- `GET /api/health/detailed` - Detailed health status
+- `GET /api/stats` - Application statistics
+- `GET /metrics` - Prometheus metrics
 
----
+### Metrics
 
-## 🔧 Development
+The bot exposes Prometheus metrics:
 
-### Adding New Job Sources
-1. **Create scraper function** in `services/scraper_engine.py`
-2. **Add to run_scrapers()** function
-3. **Test locally** before deploying
-4. **Monitor logs** for any issues
+- `job_bot_requests_total` - Total HTTP requests
+- `job_bot_scraper_jobs_added_total` - Jobs added by source
+- `job_bot_scraper_errors_total` - Scraper errors
+- `job_bot_messages_sent_total` - Messages sent
+- `job_bot_circuit_breaker_state` - Circuit breaker states
 
-### Customizing Job Categories
-1. **Update category lists** in handlers
-2. **Modify database schema** if needed
-3. **Update admin commands** for new categories
-4. **Test user experience** thoroughly
+## 🚀 Deployment
 
-### Database Migrations
-For database schema changes:
-1. **Create backup** of existing data
-2. **Update models** in `database/models.py`
-3. **Add migration logic** in `database/db.py`
-4. **Test migration** process
+### Render (Recommended)
 
----
+1. Fork this repository
+2. Create a new Web Service on [Render](https://render.com)
+3. Connect your GitHub repository
+4. Set environment variables in Render dashboard
+5. Deploy!
 
-## 🚨 Troubleshooting
+See [RENDER_DEPLOYMENT_GUIDE.md](RENDER_DEPLOYMENT_GUIDE.md) for detailed instructions.
 
-### Common Issues
+### Docker
 
-#### Bot Not Responding
-- Check webhook configuration
-- Verify environment variables
-- Check application logs
-- Ensure bot is not blocked by users
-
-#### Database Issues
-- Check file permissions
-- Verify database path
-- Monitor disk space
-- Check for corruption
-
-#### Scraping Failures
-- Check network connectivity
-- Verify API endpoints
-- Monitor rate limits
-- Check user-agent headers
-
-### Log Analysis
 ```bash
-# View application logs
-docker-compose logs job-alert-bot
+# Build image
+docker build -t job-alert-bot .
 
-# Filter for errors
-docker-compose logs job-alert-bot | grep ERROR
-
-# Monitor in real-time
-docker-compose logs -f job-alert-bot
+# Run container
+docker run -d \
+  -e TELEGRAM_TOKEN=your_token \
+  -e ADMIN_ID=your_id \
+  -e WEBHOOK_BASE_URL=your_url \
+  -e WEBHOOK_TOKEN=your_token \
+  -p 8000:8000 \
+  job-alert-bot
 ```
 
-### Performance Optimization
-- **Adjust batch sizes** for message sending
-- **Optimize database queries** with proper indexing
-- **Monitor memory usage** and adjust accordingly
-- **Scale horizontally** if needed
+## 📝 Bot Commands
 
----
+### User Commands
+
+- `/start` - Register and choose job category
+- `/jobs` - Get latest job listings
+- `/remote` - Get remote job listings
+- `/internships` - Get internship listings
+- `/scholarships` - Get scholarship listings
+
+### Admin Commands
+
+- `/stats` - View bot statistics
+- `/broadcast <message>` - Send message to all users
+- `/confirm_broadcast` - Confirm broadcast
+- `/cleanup_jobs [days]` - Clean old jobs (default: 30 days)
+- `/confirm_cleanup` - Confirm cleanup
+
+## 🔒 Security
+
+- Input validation and sanitization on all user inputs
+- SQL injection prevention using parameterized queries
+- HTML escaping to prevent XSS
+- Circuit breaker pattern to prevent abuse
+- Webhook token validation
+- Rate limiting on message sending
+
+## 🛠️ Development
+
+### Code Style
+
+We use Black, isort, and flake8 for code formatting:
+
+```bash
+# Format code
+black src tests
+isort src tests
+
+# Lint code
+flake8 src tests
+mypy src
+```
+
+### Pre-commit Hooks
+
+```bash
+# Install pre-commit
+pip install pre-commit
+pre-commit install
+```
+
+## 📈 CI/CD
+
+The project uses GitHub Actions for:
+
+- **Linting**: flake8, black, isort, mypy
+- **Testing**: pytest with coverage
+- **Security**: Bandit, Safety
+- **Building**: Docker image build and push
+- **Deployment**: Automated deployment to staging/production
 
 ## 🤝 Contributing
 
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Commit your changes**: `git commit -m 'Add amazing feature'`
-4. **Push to the branch**: `git push origin feature/amazing-feature`
-5. **Open a Pull Request**
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
----
+### Commit Convention
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+- `feat:` New feature
+- `fix:` Bug fix
+- `docs:` Documentation changes
+- `style:` Code style changes (formatting)
+- `refactor:` Code refactoring
+- `test:` Test changes
+- `chore:` Build/process changes
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-
 ## 🙏 Acknowledgments
 
-- **python-telegram-bot** team for the excellent library
-- **FastAPI** team for the amazing web framework
-- **All contributors** who help improve this project
-
----
+- [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) - Telegram Bot API wrapper
+- [FastAPI](https://fastapi.tiangolo.com/) - Modern web framework
+- [Prometheus](https://prometheus.io/) - Monitoring and alerting
 
 ## 📞 Support
 
-For support and questions:
-- **Create an Issue** on GitHub
-- **Join our Discord** (if available)
-- **Email**: support@example.com
+For support, please:
+1. Check the [documentation](docs/)
+2. Search [existing issues](https://github.com/SmartGenzAI1/job-alert-bot/issues)
+3. Create a new issue if needed
 
 ---
 
-**Made with ❤️ for the developer community**
-- /stats
-
-### Smart
-- automatic scraping
-- duplicate prevention
-- batching (anti rate limit)
-- webhook (Render free-tier safe)
-- SQLite database
-- async fast delivery
-
----
-
-## 🧠 Tech Stack
-
-- Python
-- python-telegram-bot
-- FastAPI
-- SQLite
-- Render hosting
-
----
-
-## ⚙️ Setup
-
-### 1. Install
+Made with ❤️ by [SmartGenzAI](https://github.com/SmartGenzAI1)

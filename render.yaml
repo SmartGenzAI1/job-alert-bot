@@ -5,8 +5,14 @@ services:
     region: oregon
     plan: free
     runtime: python3.13
-    buildCommand: pip install -r requirements.txt
-    startCommand: "uvicorn asgi:app --host 0.0.0.0 --port $PORT --workers 1 --log-level info"
+    buildCommand: |
+      echo "Installing dependencies..."
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      echo "Dependencies installed successfully"
+    startCommand: |
+      echo "Starting Job Alert Bot..."
+      uvicorn asgi:app --host 0.0.0.0 --port $PORT --workers 1 --log-level info
     healthCheckPath: /
     envVars:
       - key: TELEGRAM_TOKEN
@@ -32,7 +38,11 @@ services:
         value: INFO
       - key: DB_FILE
         value: database.db
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: PYTHONDONTWRITEBYTECODE
+        value: "1"
     healthCheckInterval: 30
     healthCheckTimeout: 10
     healthCheckRetries: 3
-    healthCheckStartPeriod: 40
+    healthCheckStartPeriod: 60
