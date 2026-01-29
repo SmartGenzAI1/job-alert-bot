@@ -2,7 +2,7 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from telegram import Update
 from telegram.ext import ContextTypes
 from database.models import add_user, set_category
-from config import logger
+from utils.logger import logger
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):

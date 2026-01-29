@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 from database.models import get_latest_jobs
-from config import logger
+from utils.logger import logger
 
 
 async def send_jobs(update: Update, context: ContextTypes.DEFAULT_TYPE, typ: str):

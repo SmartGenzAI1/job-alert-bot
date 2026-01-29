@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 # Add the project root to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from config import logger
+from utils.logger import logger
 from database.models import add_user, set_category, add_job, get_users, get_latest_jobs
 from database.db import init_db, get_db_stats, close_db
 from services.scraper_engine import scrape_remoteok, run_scrapers

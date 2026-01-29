@@ -2,7 +2,8 @@ import asyncio
 import logging
 from typing import List, Tuple
 
-from config import SEND_BATCH_SIZE, SEND_BATCH_SLEEP, logger
+from config import SEND_BATCH_SIZE, SEND_BATCH_SLEEP
+from utils.logger import logger
 
 
 async def notify_users(bot, users: List[Tuple[int, str]], jobs: List[Tuple[str, str, str]]):

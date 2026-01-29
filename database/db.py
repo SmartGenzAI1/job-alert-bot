@@ -3,7 +3,8 @@ import logging
 import os
 from contextlib import contextmanager
 from typing import Optional, Generator
-from config import DB_FILE, logger
+from config import DB_FILE
+from utils.logger import logger
 
 # Global connection and cursor
 _conn: Optional[sqlite3.Connection] = None

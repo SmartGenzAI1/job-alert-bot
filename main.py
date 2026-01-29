@@ -7,7 +7,8 @@ import time
 import os
 from typing import Dict, Any
 
-from config import WEBHOOK_BASE_URL, WEBHOOK_TOKEN, logger
+from config import WEBHOOK_BASE_URL, WEBHOOK_TOKEN
+from utils.logger import logger
 from bot import create_bot
 from database.db import init_db, get_db_stats, close_db
 

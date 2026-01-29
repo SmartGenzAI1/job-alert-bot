@@ -4,7 +4,7 @@ import logging
 from typing import List, Dict, Any
 
 from database.models import add_job
-from config import logger
+from utils.logger import logger
 
 
 def scrape_remoteok() -> int:

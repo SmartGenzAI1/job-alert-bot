@@ -1,8 +1,10 @@
 from datetime import timedelta, datetime
 from zoneinfo import ZoneInfo
+import asyncio
 import logging
 
-from config import SCRAPE_INTERVAL_HOURS, DAILY_ALERT_HOUR, TIMEZONE, logger
+from config import SCRAPE_INTERVAL_HOURS, DAILY_ALERT_HOUR, TIMEZONE
+from utils.logger import logger
 from services.scraper_engine import run_scrapers
 from services.notifier import notify_users
 from database.models import get_users, get_db_connection
@@ -73,8 +75,6 @@ def setup_scheduler(app):
         """Run scrapers and handle any errors."""
         try:
             logger.info("Starting scheduled scraping job")
-            # Import here to avoid circular imports
-            from services.scraper_engine import run_scrapers
             results = run_scrapers()
             total_jobs = sum(results.values())
             logger.info(f"Scheduled scraping job completed successfully: {total_jobs} jobs added")
@@ -83,8 +83,12 @@ def setup_scheduler(app):
             logger.error(f"Error in scheduled scraping job: {e}")
 
     # Schedule scraping job
+    async def run_scraping_job(context):
+        """Run scraping job asynchronously."""
+        await scrape_and_notify(context)
+    
     app.job_queue.run_repeating(
-        lambda context: app.application.create_task(scrape_and_notify(context)),
+        run_scraping_job,
         interval=SCRAPE_INTERVAL_HOURS * 3600,
         name="scraping_job"
     )

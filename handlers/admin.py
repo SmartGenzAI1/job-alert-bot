@@ -1,6 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
-from config import ADMIN_ID, logger
+from config import ADMIN_ID
+from utils.logger import logger
 from database.models import get_users, get_user_count, get_job_count
 
 
